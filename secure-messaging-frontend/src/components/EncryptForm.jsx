@@ -15,7 +15,18 @@ const {encryptionOutput,setEncryptionOutput } = useContext(EncryptionContext); /
   };
   return(
 
+
+
      <div className="writeEncryption">
+        { encryptionOutput &&  (
+          
+        <div className="EncryptionOutput"> 
+            <p><strong>CipherText:</strong><br></br> {encryptionOutput.ciphertext}</p>
+            <p><strong>Key: </strong> {encryptionOutput.key}</p>
+            <p> <strong>Initilized Vectors: </strong> <br></br> {encryptionOutput.iv}</p>
+        </div>
+    )}
+
     <input
     id='message'
     type="text"
@@ -30,14 +41,7 @@ const {encryptionOutput,setEncryptionOutput } = useContext(EncryptionContext); /
     <button>Send</button>
     </span>
 
-    { encryptionOutput &&  (
-          
-        <div>
-            <p>CipherText: {encryptionOutput.ciphertext}</p><br></br>
-            <p>Key: {encryptionOutput.key}</p><br></br>
-            <p> Initilized Vectors: {encryptionOutput.iv}</p>
-        </div>
-    )}
+ 
     
 
 

@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import EncryptForm from './components/EncryptForm'
 import DecryptForm from './components/DecryptForm'
+import LogPanel from './components/LogPanel'
+
 import React, { useContext } from "react";
 export const EncryptionContext = React.createContext();// Import the ciphtertext and key and iv from EncryptForm.jsx
 
@@ -30,6 +32,8 @@ function App() {
       <EncryptionContext.Provider value={{encryptionOutput,setEncryptionOutput,decryptionOutput,setDecryptionOutput}}>  {/*Provide the output value to the context*/}
       <EncryptForm />
       <DecryptForm/>
+      <LogPanel/>
+      
 </EncryptionContext.Provider>  {/*Provide the output value to the context*/}
 
 

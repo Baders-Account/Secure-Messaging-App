@@ -28,7 +28,7 @@ export default function DecryptForm() {
     <div className="showEncryption">
         <div className="decrypted-message">
          
-         {isMessageVisible && <h1>Message: {decryptionOutput}</h1>}
+         {isMessageVisible && <p>Message: {decryptionOutput} </p> || <p> Decrypted message will appear here </p>}
 
 
         </div>
