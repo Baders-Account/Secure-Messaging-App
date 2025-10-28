@@ -1,22 +1,24 @@
-
-import React from 'react';
+import React from "react";
+import { Card, Form } from "react-bootstrap";
 
 export default function LogPanel() {
-    return (
-      <div className="log-panel">
-        
-        <h3>Logs:</h3>
-        <label htmlFor="log-level">Log Level:</label>
-        <select className="dropdown" multiple>
-            <option>INFO</option>
-            <option>WARN</option>
-            <option>ERROR</option>
-            <option>FATAL</option>
-            
+  return (
+    <div className="log-panel mt-4">
+      <Card>
+        <Card.Header as="h5">Logs</Card.Header>
 
-
-
-        </select>
-      </div>
-    );
-  }
+        <Card.Body>
+          <Form.Group controlId="logLevel">
+            <Form.Label>Log Level:</Form.Label>
+            <Form.Select multiple aria-label="Select log level">
+              <option>INFO</option>
+              <option>WARN</option>
+              <option>ERROR</option>
+              <option>FATAL</option>
+            </Form.Select>
+          </Form.Group>
+        </Card.Body>
+      </Card>
+    </div>
+  );
+}

@@ -2,11 +2,17 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+
+
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import EncryptForm from './components/EncryptForm'
 import DecryptForm from './components/DecryptForm'
 import LogPanel from './components/LogPanel'
 
 import React, { useContext } from "react";
+import LoginForm from './components/LoginForm'
 export const EncryptionContext = React.createContext();// Import the ciphtertext and key and iv from EncryptForm.jsx
 
 function App() {
@@ -29,10 +35,29 @@ function App() {
 
     </span>
    */} 
+
       <EncryptionContext.Provider value={{encryptionOutput,setEncryptionOutput,decryptionOutput,setDecryptionOutput}}>  {/*Provide the output value to the context*/}
-      <EncryptForm />
-      <DecryptForm/>
-      <LogPanel/>
+
+        <Container>
+          <Row>
+            <Col  >
+             <LoginForm/>
+          </Col>
+          <Col>
+            <EncryptForm />
+            <DecryptForm/>
+          </Col>
+          </Row>
+
+          <Row>
+            
+            <LogPanel/>
+            
+          </Row>
+          
+        </Container>
+     
+      
       
 </EncryptionContext.Provider>  {/*Provide the output value to the context*/}
 
@@ -41,7 +66,7 @@ function App() {
     </>
     
   
-  ) 
+  ); 
   
 }
 
