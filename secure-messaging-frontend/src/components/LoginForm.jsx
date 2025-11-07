@@ -1,8 +1,6 @@
-
 import React, { useState, useContext } from "react";
 import { Card, Button, Form, ButtonGroup } from "react-bootstrap";
-import { registerUser, getPublicKey } from "../api/usersApi";
-import { generateKeyPair } from "../api/cryptoApi";
+import { registerUser, loginUser } from "../api/usersApi";
 import { EncryptionContext } from "../EncryptionContext.jsx";
 
 export default function LoginForm() {
@@ -11,63 +9,62 @@ export default function LoginForm() {
   const [loggingVisible, setLoggingVisible] = useState(true);
   const { setUsername } = useContext(EncryptionContext);
 
-  // Handle login (for now just set session)
+
+  // Handle Login
+ 
   const handleLogIn = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!userName || !password) {
-    alert("Please enter both username and password");
-    return;
-  }
+    if (!userName || !password) {
+      alert("Please enter both username and password");
+      return;
+    }
 
-  //  restore private key after login
-  const savedKey = localStorage.getItem("privateKey");
-  if (!savedKey) {
-    alert(" No private key found. Please register again.");
-    return;
-  }
+    try {
+      const res = await loginUser({
+        username: userName,
+        password: password,
+      });
 
-  setUsername(userName);
-  localStorage.setItem("username", userName);
+      if (res.status === 200) {
+        setUsername(userName);
+        localStorage.setItem("username", userName);
+        alert(`Logged in as ${userName}`);
+      } else {
+        alert("Invalid credentials.");
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+      alert("Login failed — please check credentials.");
+    }
+  };
 
-  alert(`Logged in as ${userName}`);
-};
-
-
-  // Handle registration
-  
+ 
+  // Handle Registration
+ 
   const handleRegister = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!userName || !password) {
-    alert("Please fill in both fields");
-    return;
-  }
+    if (!userName || !password) {
+      alert("Please fill in both fields");
+      return;
+    }
 
-  try {
-    // Generate EC key pair
-    const { publicKey, privateKey } = await generateKeyPair();
+    try {
+      await registerUser({
+        username: userName,
+        password: password,
+      });
 
-    //  Save private key locally (Base64)
-    localStorage.setItem("privateKey", privateKey);
+      setUsername(userName);
+      localStorage.setItem("username", userName);
 
-    //  Send public key to backend
-    await registerUser({
-      username: userName,
-      password: password, 
-      ecPublicKey: publicKey, 
-    });
-
-    // Save username in session
-    setUsername(userName);
-    localStorage.setItem("username", userName);
-
-    alert(`User ${userName} registered successfully.`);
-  } catch (err) {
-    console.error(err);
-    alert("Registration failed.");
-  }
-};
+      alert(`User ${userName} registered successfully.`);
+    } catch (err) {
+      console.error("Registration failed:", err);
+      alert("Registration failed — check the console for details.");
+    }
+  };
 
   return (
     <Card className="mt-4">

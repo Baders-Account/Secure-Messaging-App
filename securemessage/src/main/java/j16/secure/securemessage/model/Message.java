@@ -12,8 +12,8 @@ public class Message {
     public Message() {
     }
 
-    public Message(String id, String sender, String receiver, String ciphertext, String iv, String timestamp) {
-        this.id = id;
+    public Message( String sender, String receiver, String ciphertext, String iv, String timestamp) {
+        
         this.sender = sender;
         this.receiver = receiver;
         this.ciphertext = ciphertext;

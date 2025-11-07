@@ -1,6 +1,16 @@
 package j16.secure.securemessage.model;
 
-import jakarta.persistence.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.util.Base64;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import j16.secure.securemessage.service.ECDHService;
+
+import jakarta.persistence.*; 
 
 @Entity
 @Table(name = "users")
@@ -27,18 +37,26 @@ public class User {
     @Column(name = "ec_public_key")
     private String ecPublicKey;
 
-    public User() {
-    }
+    @Lob
+    @Column(name = "ec_private_key")
+    private String ecPrivateKey; 
 
-    public User(String username, String pwdSaltHex, String passwordHash, String ecPublicKey, int pwdIterations) {
+    // Constructors
+    public User() {}
+
+    public User(String username, String pwdSaltHex, String passwordHash,
+                String ecPublicKey, String ecPrivateKey, int pwdIterations) {
         this.username = username;
         this.pwdSaltHex = pwdSaltHex;
         this.passwordHash = passwordHash;
         this.ecPublicKey = ecPublicKey;
+        this.ecPrivateKey = ecPrivateKey;
         this.pwdIterations = pwdIterations;
     }
 
-    // Getters and setters
+    // Getters & setters
+    // ...
+
 
     public Long getId() {
         return id;
@@ -84,7 +102,11 @@ public class User {
         return ecPublicKey;
     }
 
-    public void setEcPublicKey(String ecPublicKey) {
-        this.ecPublicKey = ecPublicKey;
+    public void setEcPublicKey(String ecPublicKey){
+        this.ecPublicKey= ecPublicKey;
     }
+
+   
+
+   
 }

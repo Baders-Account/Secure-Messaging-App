@@ -21,6 +21,7 @@ public class UserController {
     public ResponseEntity<String> getPublicKey(@PathVariable String username) {
         try {
             User user = userService.findUser(username);
+            
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("User not found");

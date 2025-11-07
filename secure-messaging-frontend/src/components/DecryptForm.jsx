@@ -1,64 +1,73 @@
-
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { EncryptionContext } from "../EncryptionContext.jsx";
 import { getPublicKey, getInbox } from "../api/usersApi";
-import { deriveAESKey, decryptAES, b64ToBuf, bufToB64 } from "../api/cryptoApi";
+import { getServerPublicKey, deriveAndDecrypt } from "../api/cryptoApi";
 
 export default function DecryptForm() {
-  const { username, decryptionOutput, setDecryptionOutput } = useContext(EncryptionContext);
+  const { username, decryptionOutput, setDecryptionOutput } =
+    useContext(EncryptionContext);
   const [inbox, setInbox] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
+ 
+  useEffect(() => {
+    if (username) loadInbox();
+  }, [username]);
 
   const loadInbox = async () => {
     try {
-      const res = await getInbox(username);
-      setInbox(res.data);
+      const messages = await getInbox(username);
+      console.log("Inbox:", messages);
+      setInbox(messages || []); // fallback to empty array
     } catch (err) {
       console.error("Inbox load failed:", err);
       alert("Failed to load inbox");
     }
   };
 
+  // Decrypt a selected message 
   const handleDecrypt = async (msg) => {
-  try {
-    const senderPublicKey = (await getPublicKey(msg.sender)).data;
-    console.log("Sender public key:", senderPublicKey);
+    try {
+      // Fetch sender’s public key
+      const senderPublicKey = await getPublicKey(msg.sender);
+      console.log(`sender's name: ${msg.sender}`)
+      console.log("Sender public key:", senderPublicKey);
 
-    // private key
-    const privateKey = localStorage.getItem("privateKey");
-    console.log(`this is what i need${privateKey}`)
-    //const privateKeyBytes = new Uint8Array(privateKeyArray);
-    
-    console.log(`iv: ${msg.iv}`)
-    console.log(`cipherText: ${msg.ciphertext}`)
+      // Fetch server’s public key (used on both sides for ECDH derivation)
+      const serverPublicKey = await getServerPublicKey();
+      console.log("Server public key:", serverPublicKey);
 
+      // Ask backend to derive shared key + decrypt
+      const { plaintext } = await deriveAndDecrypt(
+        senderPublicKey,     // peer (sender) public key
+        msg.ciphertext,      // ciphertext Base64
+        msg.iv               // iv Base64
+      );
 
-    // Derive AES key from ECDH
-    const aesKey = await deriveAESKey(privateKey, senderPublicKey);
-    console.log(`Aes Key?${aesKey}`)
-    // Decrypt ciphertext (these are Base64)
-    const plaintext = await decryptAES(aesKey, msg.ciphertext, msg.iv);
-
-    console.log("Decrypted plaintext:", plaintext);
-    setSelectedMessage(msg);
-    setDecryptionOutput(plaintext);
-  } catch (err) {
-    console.error("Decryption failed:", err);
-    alert("Decryption failed");
-  }
-};
+      setSelectedMessage(msg);
+      setDecryptionOutput(plaintext);
+      console.log("Decrypted plaintext:", plaintext);
+    } catch (err) {
+      console.error("Decryption failed:", err);
+      alert("Decryption failed. Check the console for details.");
+    }
+  };
 
   return (
     <div className="container mt-4 p-3 border rounded">
-      <h3>Decrypt Messages</h3>
+      <h3>Decrypt Messages (Server-Side)</h3>
+
       <button className="btn btn-secondary mb-3" onClick={loadInbox}>
         Load Inbox
       </button>
 
-      {inbox.map((msg) => (
+      {inbox.length>0 ? (inbox.map((msg) => (
         <div key={msg.id} className="border p-2 mb-2">
-          <p><b>From:</b> {msg.sender}</p>
-          <p><b>Ciphertext:</b> <code>{msg.ciphertext}</code></p>
+          <p>
+            <b>From:</b> {msg.sender}
+          </p>
+          <p>
+            <b>Ciphertext:</b> <code className="text-break">{msg.ciphertext}</code>
+          </p>
           <button
             className="btn btn-sm btn-outline-success"
             onClick={() => handleDecrypt(msg)}
@@ -66,7 +75,9 @@ export default function DecryptForm() {
             Decrypt
           </button>
         </div>
-      ))}
+      ))
+    ) : ( <p>No Messages in your inbox. </p>)
+      }
 
       {selectedMessage && (
         <div className="mt-3">
