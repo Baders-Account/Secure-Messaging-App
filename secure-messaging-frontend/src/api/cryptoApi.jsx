@@ -33,3 +33,7 @@ export async function deriveAndDecrypt(clientPublicKeyBase64, ciphertextB64, ivB
     ivB64,
   });
 }
+
+export async function deriveAndDecryptById(messageId) {
+return await postJSON(`${API_URL}/derive-and-decrypt`, { messageId });
+}

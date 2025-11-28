@@ -1,15 +1,9 @@
 [ {
-  "id" : "2b40d5a4-eb01-4168-9497-ff86cc2036b5",
-  "sender" : "Talal",
-  "receiver" : "Rasha",
-  "ciphertext" : "cd2AV7fyooAYNqsBbi7gNR0rxGMdDNdU+pmP6F4cClJn7yhd0Z8WSVYm4OFB4y/iDK9ZTDfp1kZJabOHJxb7dXtUVQ==",
-  "iv" : "FixP2qilTOVkoqf4",
-  "timestamp" : "2025-11-06T11:48:49.870Z"
-}, {
-  "id" : "0665a634-1712-4bef-9300-ad660279c442",
-  "sender" : "Rasha",
-  "receiver" : "Talal",
-  "ciphertext" : "XJIhi5xGVK+BlXftiC0urEAOeFECFbWQDRnNpkL4B/r45QI=",
-  "iv" : "5dF8dBeIkI4YMm0b",
-  "timestamp" : "2025-11-06T11:58:26.700Z"
+  "id" : "11841d7a-00ba-4538-b479-5a35a546f2dc",
+  "sender" : "user1",
+  "senderPublicKeyBase64" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1OoWWEvM4WlY6LmdYM7lE8hO/z4kWEmUhqEEem4wI1uFnDhxnJh+1/WtQQmgv8NxphrxYftjtok/ZifdWcCy9g==",
+  "receiver" : "user2",
+  "ciphertext" : "qs3Px7FmI2YSO+swKX7jGg==",
+  "iv" : "ny3zrope3J2cuvX/20wSvw==",
+  "timestamp" : "2025-11-28T17:38:37.723Z"
 } ]

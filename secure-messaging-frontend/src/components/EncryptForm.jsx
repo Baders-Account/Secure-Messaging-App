@@ -17,9 +17,9 @@ export default function EncryptForm() {
     }
 
     try {
-      // Fetch receiver’s public key 
-      const peerPublicKey = await getPublicKey(receiverInput);
-      console.log("Receiver public key:", peerPublicKey);
+      // Fetch SENDER's public key (your own key)
+      const senderPublicKey = await getPublicKey(username);
+      console.log("Sender public key:", senderPublicKey);
 
       // Fetch server’s own public key
       const serverPublicKey = await getServerPublicKey();
@@ -27,7 +27,7 @@ export default function EncryptForm() {
 
       //  derive the AES key & encrypt message
       const { ciphertextB64, ivB64 } = await deriveAndEncrypt(
-        peerPublicKey, // the receiver’s public key
+        senderPublicKey, // sender’s public key
         message        // plaintext to encrypt
       );
       const date= new Date();
@@ -35,6 +35,7 @@ export default function EncryptForm() {
       await sendMessage({
         
         sender: username,
+        senderPublicKeyBase64: senderPublicKey, // NEW FIELD
         receiver: receiverInput,
         ciphertext: ciphertextB64,
         iv: ivB64,

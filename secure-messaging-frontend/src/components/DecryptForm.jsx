@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { EncryptionContext } from "../EncryptionContext.jsx";
 import { getPublicKey, getInbox } from "../api/usersApi";
-import { getServerPublicKey, deriveAndDecrypt } from "../api/cryptoApi";
+//import { getServerPublicKey, deriveAndDecrypt } from "../api/cryptoApi";
+import { deriveAndDecryptById } from "../api/cryptoApi";
+
 
 export default function DecryptForm() {
   const { username, decryptionOutput, setDecryptionOutput } =
@@ -27,21 +29,9 @@ export default function DecryptForm() {
   // Decrypt a selected message 
   const handleDecrypt = async (msg) => {
     try {
-      // Fetch sender’s public key
-      const senderPublicKey = await getPublicKey(msg.sender);
-      console.log(`sender's name: ${msg.sender}`)
-      console.log("Sender public key:", senderPublicKey);
+      console.log("Decrypting message id:", msg.id);
+      const { plaintext } = await deriveAndDecryptById(msg.id);
 
-      // Fetch server’s public key (used on both sides for ECDH derivation)
-      const serverPublicKey = await getServerPublicKey();
-      console.log("Server public key:", serverPublicKey);
-
-      // Ask backend to derive shared key + decrypt
-      const { plaintext } = await deriveAndDecrypt(
-        senderPublicKey,     // peer (sender) public key
-        msg.ciphertext,      // ciphertext Base64
-        msg.iv               // iv Base64
-      );
 
       setSelectedMessage(msg);
       setDecryptionOutput(plaintext);

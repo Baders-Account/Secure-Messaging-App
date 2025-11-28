@@ -34,7 +34,7 @@ public class ECDHService {
 
         // HKDF-Extract-and-Expand 
         byte[] prk = hmacSha256(new byte[32], shared); // salt 
-        byte[] info = "AES-GCM key".getBytes(StandardCharsets.UTF_8);
+        byte[] info = "AES-CBC key".getBytes(StandardCharsets.UTF_8);
         byte[] okm = hkdfExpand(prk, info, 32); // 32 bytes = 256-bit key
 
         return new SecretKeySpec(okm, "AES");
@@ -47,45 +47,49 @@ public class ECDHService {
         byte[] peerKeyBytes = Base64.getDecoder().decode(theirPubBase64);
         KeyFactory kf = KeyFactory.getInstance("EC");
         PublicKey theirPub = kf.generatePublic(new X509EncodedKeySpec(peerKeyBytes));
-        return deriveSharedSecret(myPriv, theirPub);
+        SecretKey key = deriveSharedSecret(myPriv, theirPub);
+        System.out.println("Derived AES key (Base64)=" +
+                Base64.getEncoder().encodeToString(key.getEncoded()));
+        return key;
+
     }
 
     // include CBC also
 
+// AES-CBC Encrypt
+public Map<String, String> encryptAES(SecretKey aesKey, String plaintext) throws Exception {
+    // 16-byte IV for AES-CBC
+    byte[] iv = new byte[16];
+    new SecureRandom().nextBytes(iv);
+    IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.ENCRYPT_MODE, aesKey, ivSpec);
 
-    // AES-GCM Encrypt
+    byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
 
-       public Map<String, String> encryptAES(SecretKey aesKey, String plaintext) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        byte[] iv = new byte[12];
-        new SecureRandom().nextBytes(iv);
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey, gcmSpec);
+    return Map.of(
+        "ciphertextB64", Base64.getEncoder().encodeToString(ciphertext),
+        "ivB64", Base64.getEncoder().encodeToString(iv)
+    );
+}
 
-        byte[] ciphertext = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+// AES-CBC Decrypt
+public String decryptAES(SecretKey aesKey, String ciphertextB64, String ivB64) throws Exception {
+    byte[] ciphertext = Base64.getDecoder().decode(ciphertextB64);
+    byte[] iv = Base64.getDecoder().decode(ivB64);
+    IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
-        return Map.of(
-            "ciphertextB64", Base64.getEncoder().encodeToString(ciphertext),
-            "ivB64", Base64.getEncoder().encodeToString(iv)
-        );
-    }
+    Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+    cipher.init(Cipher.DECRYPT_MODE, aesKey, ivSpec);
+
+    byte[] plaintextBytes = cipher.doFinal(ciphertext);
+    return new String(plaintextBytes, StandardCharsets.UTF_8);
+}
 
     
-    //  AES-GCM Decrypt
-    
-    public String decryptAES(SecretKey aesKey, String ciphertextB64, String ivB64) throws Exception {
-        byte[] ciphertext = Base64.getDecoder().decode(ciphertextB64);
-        byte[] iv = Base64.getDecoder().decode(ivB64);
 
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, iv);
-        cipher.init(Cipher.DECRYPT_MODE, aesKey, gcmSpec);
-
-        byte[] plaintextBytes = cipher.doFinal(ciphertext);
-        return new String(plaintextBytes, StandardCharsets.UTF_8);
-    }
-
+    //HKDF functions
     
     private byte[] hmacSha256(byte[] key, byte[] data) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
@@ -112,4 +116,5 @@ public class ECDHService {
         byte[] okm = out.toByteArray();
         return Arrays.copyOf(okm, length);
     }
+    
 }

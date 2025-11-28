@@ -56,4 +56,11 @@ public class MessageService {
         }
         return results;
     }
+
+    public Message getMessageById(String id) throws IOException {
+        for (Message m : getAllMessages()) {
+            if (id.equals(m.getId())) return m;
+        }
+        return null;
+    }
 }

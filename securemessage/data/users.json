@@ -47,4 +47,25 @@
   "pwdSaltHex" : "3eb6ee592dbf796d9477c5c3ed989486",
   "pwdIterations" : 260000,
   "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEsLwfZumvr1mSmQVkvFhbZR3JHEbS7kLw/JqUs3WTm5/fnEZLyypE+vChQtnX9Wy5M+Dsn8kYFO3Bxw5DOIIerg=="
+}, {
+  "id" : 8,
+  "username" : "user1",
+  "passwordHash" : "IAhFfybwdS/qf/ef7H2CXk93FZ+sRoKIrtXAt7nGaHc=",
+  "pwdSaltHex" : "3a59abf65580f8ee432a037cf027ed48",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1OoWWEvM4WlY6LmdYM7lE8hO/z4kWEmUhqEEem4wI1uFnDhxnJh+1/WtQQmgv8NxphrxYftjtok/ZifdWcCy9g=="
+}, {
+  "id" : 9,
+  "username" : "user2",
+  "passwordHash" : "2sXz7k121KrrpnRWm5SiNm23lFEiDOCPzrm/G+7Cntc=",
+  "pwdSaltHex" : "794506a235a73614e0ee9809ae4b8296",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtQb3Hvrct+XWW3Pm0o97nu1XdGaNVEu3FvU5Xw8n6xIshuUIa+u8G8kQJttKVOmYZXgAFQhe/hys0KM37j7NwA=="
+}, {
+  "id" : 10,
+  "username" : "user3",
+  "passwordHash" : "VYU4JhZrRmq7mRmES+AIB8TftO/Z1UZd8UPjmPzhMu8=",
+  "pwdSaltHex" : "03d91b3c634ade41c1ae9bfafc42c184",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHRC+G6Ii2bI9WWH07v1YRQ5wAgP5iR0y6+braT/iyLjYonxG6mjcSyiB+8G4eWPsDYXfpVX4juaZ4cFdzA/OBw=="
 } ]
