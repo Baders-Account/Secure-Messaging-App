@@ -1,16 +1,24 @@
 package j16.secure.securemessage.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import attacks.BruteForcer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import j16.secure.securemessage.service.ECDHService;
 
 import j16.secure.securemessage.model.Message;
 import j16.secure.securemessage.service.MessageService;
-
+import java.util.Arrays;
 import java.security.KeyPair;
+import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
+
+import javax.crypto.SecretKey;
 
 @RestController
 @RequestMapping("/api/crypto")
@@ -96,7 +104,142 @@ public class CryptoController {
         e.printStackTrace();
         throw new RuntimeException("Decryption failed: " + e.getMessage());
     }
+
+
 }
+
+
+@PostMapping("/encrypt-with-password")
+public Map<String, String> encryptWithPassword(@RequestBody Map<String, String> body) {
+    try {
+        String plaintext = body.get("plaintext");
+        String password = body.get("password");
+        
+        SecretKey key = ecdhService.deriveKeyFromPasswordWeak(password);
+        return ecdhService.encryptAES(key, plaintext);
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException("Password encryption failed: " + e.getMessage());
+    }
+}
+
+@PostMapping("/brute-force-attack")
+public Map<String, Object> bruteForceAttack(@RequestBody Map<String, String> body) {
+    try {
+        String ciphertextB64 = body.get("ciphertext");
+        String ivB64 = body.get("iv");
+        String knownPlaintext = body.get("knownPlaintext");
+        boolean useStrong = Boolean.parseBoolean(body.getOrDefault("useStrong", "false"));
+        
+        long startTime = System.currentTimeMillis();
+        String crackedPassword = null;
+        String successfulMethod = null;
+        int totalAttempts = 0;
+        int maxAttemptsPerMethod = useStrong ? 5 : 5000;
+        
+        // Try numeric first (fastest)
+        BruteForcer numericForcer = BruteForcer.createNumericBruteForcer();
+        int attempts = 0;
+        while (attempts < maxAttemptsPerMethod && crackedPassword == null) {
+            String pwd = numericForcer.computeNextCombination();
+            attempts++;
+            totalAttempts++;
+            
+            if (numericForcer.getCurrentLength() > 4) break;
+            
+            if (tryPassword(pwd, ciphertextB64, ivB64, knownPlaintext, useStrong)) {
+                crackedPassword = pwd;
+                successfulMethod = "Numeric";
+                break;
+            }
+        }
+        
+        // Try alphabetic if numeric failed
+        if (crackedPassword == null) {
+            BruteForcer alphaForcer = BruteForcer.createAlphaBruteForcer();
+            attempts = 0;
+            while (attempts < maxAttemptsPerMethod && crackedPassword == null) {
+                String pwd = alphaForcer.computeNextCombination();
+                attempts++;
+                totalAttempts++;
+                
+                if (alphaForcer.getCurrentLength() > 3) break; // Limit for demo
+                
+                if (tryPassword(pwd, ciphertextB64, ivB64, knownPlaintext, useStrong)) {
+                    crackedPassword = pwd;
+                    successfulMethod = "Alphabetic";
+                    break;
+                }
+            }
+        }
+        
+        // Try alphanumeric if both failed
+        if (crackedPassword == null) {
+            BruteForcer alphanumericForcer = BruteForcer.createAlphaNumericBruteForcer();
+            attempts = 0;
+            while (attempts < maxAttemptsPerMethod && crackedPassword == null) {
+                String pwd = alphanumericForcer.computeNextCombination();
+                attempts++;
+                totalAttempts++;
+                
+                if (alphanumericForcer.getCurrentLength() > 3) break; // Limit for demo
+                
+                if (tryPassword(pwd, ciphertextB64, ivB64, knownPlaintext, useStrong)) {
+                    crackedPassword = pwd;
+                    successfulMethod = "Alphanumeric";
+                    break;
+                }
+            }
+        }
+        
+        long timeTaken = System.currentTimeMillis() - startTime;
+        
+        String message;
+        if (crackedPassword != null) {
+            message = String.format("✅ Password '%s' cracked using %s brute force in %dms after %d total attempts!", 
+                crackedPassword, successfulMethod, timeTaken, totalAttempts);
+        } else if (useStrong) {
+            message = String.format("🛡️ Strong PBKDF2 protection withstood %d attempts across all methods in %dms. Full attack would take days!", 
+                totalAttempts, timeTaken);
+        } else {
+            message = String.format("❌ Password not cracked after %d attempts across all methods in %dms", 
+                totalAttempts, timeTaken);
+        }
+        
+        return Map.of(
+            "success", crackedPassword != null,
+            "crackedPassword", crackedPassword != null ? crackedPassword : "Not found",
+            "attempts", totalAttempts,
+            "timeTakenMs", timeTaken,
+            "attackType", successfulMethod != null ? successfulMethod : "All methods tried",
+            "message", message
+        );
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException("Brute force failed: " + e.getMessage());
+    }
+}
+
+private boolean tryPassword(String password, String ciphertextB64, String ivB64, 
+                           String knownPlaintext, boolean useStrong) {
+    try {
+        SecretKey key;
+        if (useStrong) {
+            byte[] salt = new byte[16];
+            key = ecdhService.deriveKeyFromPasswordStrong(password, salt, 100000);
+        } else {
+            key = ecdhService.deriveKeyFromPasswordWeak(password);
+        }
+        
+        String decrypted = ecdhService.decryptAES(key, ciphertextB64, ivB64);
+        return decrypted.contains(knownPlaintext);
+    } catch (Exception e) {
+        return false;
+    }
+}
+
+
+
 
 }
 

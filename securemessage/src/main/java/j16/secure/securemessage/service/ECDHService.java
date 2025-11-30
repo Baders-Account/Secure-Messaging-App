@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.KeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 import javax.crypto.*;
@@ -116,5 +117,21 @@ public String decryptAES(SecretKey aesKey, String ciphertextB64, String ivB64) t
         byte[] okm = out.toByteArray();
         return Arrays.copyOf(okm, length);
     }
+
+
+
+    public SecretKey deriveKeyFromPasswordWeak(String password) throws Exception {
+    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+    return new SecretKeySpec(hash, "AES");
+}
+
+public SecretKey deriveKeyFromPasswordStrong(String password, byte[] salt, int iterations) throws Exception {
+    SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, 256);
+    SecretKey tmp = factory.generateSecret(spec);
+    return new SecretKeySpec(tmp.getEncoded(), "AES");
+}
+
     
 }
