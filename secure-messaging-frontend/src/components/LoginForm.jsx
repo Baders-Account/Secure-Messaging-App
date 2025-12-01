@@ -2,69 +2,84 @@ import React, { useState, useContext } from "react";
 import { Card, Button, Form, ButtonGroup } from "react-bootstrap";
 import { registerUser, loginUser } from "../api/usersApi";
 import { EncryptionContext } from "../EncryptionContext.jsx";
+import { LogContext } from "./LogContext.jsx"; 
+
 
 export default function LoginForm() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loggingVisible, setLoggingVisible] = useState(true);
   const { setUsername } = useContext(EncryptionContext);
+  const { addLog } = useContext(LogContext);
 
 
   // Handle Login
  
-  const handleLogIn = async (e) => {
-    e.preventDefault();
+const handleLogIn = async (e) => {
+  e.preventDefault();
 
-    if (!userName || !password) {
-      alert("Please enter both username and password");
-      return;
+  if (!userName || !password) {
+    addLog("WARN", "Login attempted with empty fields");
+    alert("Please enter both username and password");
+    return;
+  }
+
+  addLog("INFO", `Login attempt for username: ${userName}`);
+
+  try {
+    const res = await loginUser({
+      username: userName,
+      password: password,
+    });
+
+    if (res.status === 200) {
+      addLog("INFO", `User ${userName} logged in successfully`);
+      setUsername(userName);
+      localStorage.setItem("username", userName);
+      alert(`Logged in as ${userName}`);
+    } else {
+      addLog("ERROR", `Invalid login for username: ${userName}`);
+      alert("Invalid credentials.");
     }
-
-    try {
-      const res = await loginUser({
-        username: userName,
-        password: password,
-      });
-
-      if (res.status === 200) {
-        setUsername(userName);
-        localStorage.setItem("username", userName);
-        alert(`Logged in as ${userName}`);
-      } else {
-        alert("Invalid credentials.");
-      }
-    } catch (err) {
-      console.error("Login failed:", err);
-      alert("Login failed — please check credentials.");
-    }
-  };
+  } catch (err) {
+    addLog("ERROR", `Login request failed: ${err.message}`);
+    console.error("Login failed:", err);
+    alert("Login failed — please check credentials.");
+  }
+};
 
  
   // Handle Registration
- 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+ const handleRegister = async (e) => {
+  e.preventDefault();
 
-    if (!userName || !password) {
-      alert("Please fill in both fields");
-      return;
-    }
+  if (!userName || !password) {
+    addLog("WARN", "Registration attempted with empty fields");
+    alert("Please fill in both fields");
+    return;
+  }
 
-    try {
-      await registerUser({
-        username: userName,
-        password: password,
-      });
+  addLog("INFO", `Registration attempt for username: ${userName}`);
 
-      setUsername(userName);
-      localStorage.setItem("username", userName);
+  try {
+    await registerUser({
+      username: userName,
+      password: password,
+    });
 
-      alert(`User ${userName} registered successfully.`);
-    } catch (err) {
-      console.error("Registration failed:", err);
-      alert("Registration failed — check the console for details.");
-    }
-  };
+    addLog("INFO", `User ${userName} registered successfully`);
+
+    setUsername(userName);
+    localStorage.setItem("username", userName);
+
+    alert(`User ${userName} registered successfully.`);
+  } catch (err) {
+    addLog("ERROR", `Registration failed: ${err.message}`);
+    console.error("Registration failed:", err);
+    alert("Registration failed — check the console for details.");
+  }
+};
+
 
   return (
     <Card className="mt-4">

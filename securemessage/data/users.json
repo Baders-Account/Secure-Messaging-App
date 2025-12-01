@@ -68,4 +68,11 @@
   "pwdSaltHex" : "03d91b3c634ade41c1ae9bfafc42c184",
   "pwdIterations" : 260000,
   "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEHRC+G6Ii2bI9WWH07v1YRQ5wAgP5iR0y6+braT/iyLjYonxG6mjcSyiB+8G4eWPsDYXfpVX4juaZ4cFdzA/OBw=="
+}, {
+  "id" : 11,
+  "username" : "Saka",
+  "passwordHash" : "TcE19lqO7SaQYG9tOED7NVs1GK5k3HO0St6RrI8uDXo=",
+  "pwdSaltHex" : "4c8f472de3233acc21465a986598d970",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE59ZyMg2AEogNOR4vM+0OhDZl0PgVAvDXa9JI0ya444xNgwvxh9GVN55aoiqn8VAkd/B6Ym89DmckQ0cprNL5sg=="
 } ]
