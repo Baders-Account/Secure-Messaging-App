@@ -55,7 +55,7 @@ public class ECDHService {
 
     }
 
-    // include CBC also
+    
 
 // AES-CBC Encrypt
 public Map<String, String> encryptAES(SecretKey aesKey, String plaintext) throws Exception {
