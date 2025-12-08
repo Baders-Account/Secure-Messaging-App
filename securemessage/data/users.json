@@ -117,4 +117,53 @@
   "pwdSaltHex" : "fe1bddf19fcf1890beefa4e0a60f216f",
   "pwdIterations" : 260000,
   "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELdtv/JWjmX2MBWL4jEaRuShGVzrXjEUBTBW/cgwcnC4NQdSqHwf4NCAKJtWaep5LcetUWxsGw83RtB8UsW0mRg=="
+}, {
+  "id" : 18,
+  "username" : "testuser",
+  "passwordHash" : "kFJgpmZd1ZwI/5DczueSRQgsDomzBtR+M8eJJWuTmXY=",
+  "pwdSaltHex" : "3e93af21ba37d9ded777bb582a45d547",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAENutwPJxWqCUGvwtVku3ysw5JWwLHQwJeVUtHP8M0l2iwkqKU2RxIr9WWDsAaNGiCXExcwW0HuNY01bKN3QFpKw=="
+}, {
+  "id" : 19,
+  "username" : "demo",
+  "passwordHash" : "JiDO5xm/XndC462Yf6hnd780/De6DYBHn5SxjVPy/6k=",
+  "pwdSaltHex" : "be0474022b48d7f499da99ccecbe8051",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3xmZfdw3oPW1naGfp2ctCqFW4AHHZjM9I0PwqKPtrxQ/E9KIUkr0xmzi0AsnlFYS1R+OdV2nwWTbXQffGtiaew=="
+}, {
+  "id" : 20,
+  "username" : "demouser",
+  "passwordHash" : "ufHaP1l/bSvqbgMphiMHH0YTc/4fFsh2Ebj2v4qdEwQ=",
+  "pwdSaltHex" : "5266b38ce5abf5213168995a6d573905",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3lWLSsqOMmumoc1Y80XvWefcgBSgLZUDGVzgPxGea+7iMgrveKdsXw8kzOe4mO9eshlJRMgAM8z1v0O8II4cKA=="
+}, {
+  "id" : 21,
+  "username" : "strong",
+  "passwordHash" : "j6NLEVFwq1BgJVKB6Bvpky+kmAc0MgeXDrWysS/jIXQ=",
+  "pwdSaltHex" : "60e276ee52e92ba17f801bb60cf8d4e4",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEDoFFq+NwkfwfGiJbWwHzaPHtA0smCIZ5iHRYSDGPXJHTifej0i9Q3Gf/elr/OzSpdc6Xr5xkEMjigWo2Di5c8g=="
+}, {
+  "id" : 22,
+  "username" : "third",
+  "passwordHash" : "4OoSEQVkHbJRO0gagQgQHNmrRFKgdPpLd/iqlOWUM6c=",
+  "pwdSaltHex" : "6f728b146dce6686c4e65e6128fdd533",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEp+WBR/WncyW/gOk825QD5SOOzEnmyol4gSD7wbXnCodiXz2vaXXGEpV1ndUQ73ltO2+0FSCDqyXsnEfnKdvstA=="
+}, {
+  "id" : 23,
+  "username" : "thirduser",
+  "passwordHash" : "t/pAWLYfgkB3diFXdr8yaN1ysbIrE56n1fKnoordQXE=",
+  "pwdSaltHex" : "7efbcd416da17c3d4c31eb653926f348",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEDfOqHXtFOSprCZrP7GfYVEkCE1LKi4kcqpWA9RPpXg3XKssW1zB6hPX9M40qmyEnvf1T1WQBWGIPsWot/Mo4VA=="
+}, {
+  "id" : 24,
+  "username" : "m",
+  "passwordHash" : "qQC+dXwtWr+ACgDr32CMQqcnHy8phML1PybRrytJlvM=",
+  "pwdSaltHex" : "a0aad6324a0787b3bd9ad07d387f2f62",
+  "pwdIterations" : 260000,
+  "ecPublicKey" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEc4kkPA/KshJlmya2wX43AjTeYuxNhBQbnndt+rDOXcdkzofpRtUr4WE7x4YBWI7fqBiqKZGO3CXTlsqfwQKaag=="
 } ]

@@ -76,7 +76,7 @@ private Bucket createNewBucket() {
     return Bucket.builder()
         .addLimit(limit -> limit
             .capacity(5)// Max 5 attempts
-            .refillIntervally(5, Duration.ofSeconds(10))   // Refill after 2 minutes
+            .refillIntervally(5, Duration.ofSeconds(20))   // Refill after 2 minutes
         )
         .build();
 }

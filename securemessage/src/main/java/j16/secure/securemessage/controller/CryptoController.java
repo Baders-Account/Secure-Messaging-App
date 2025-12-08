@@ -2,7 +2,6 @@ package j16.secure.securemessage.controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import attacks.BruteForcer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

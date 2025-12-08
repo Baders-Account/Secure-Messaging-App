@@ -1,1 +1,25 @@
-[]
+[ {
+  "id" : "d7866de8-8ff2-4ee4-ae65-c847fe9fdd65",
+  "sender" : "user1",
+  "senderPublicKeyBase64" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1OoWWEvM4WlY6LmdYM7lE8hO/z4kWEmUhqEEem4wI1uFnDhxnJh+1/WtQQmgv8NxphrxYftjtok/ZifdWcCy9g==",
+  "receiver" : "user2",
+  "ciphertext" : "RymryWUbep6MrFUSLoMSzA==",
+  "iv" : "jlPoCprJ0U1NqFmL4xRNYA==",
+  "timestamp" : "2025-12-07T22:44:45.055Z"
+}, {
+  "id" : "e30a532b-d225-485b-ba25-88d3e1885d3a",
+  "sender" : "user1",
+  "senderPublicKeyBase64" : null,
+  "receiver" : "user2",
+  "ciphertext" : "uCmryWWxep6MrAASLoMSzA==",
+  "iv" : "jlPoCprJ0U1NqFmL4xRNYA==",
+  "timestamp" : "2025-12-07T22:55:12.066194900Z"
+}, {
+  "id" : "85e62378-4f97-4b9d-ae17-f3f475c8c519",
+  "sender" : "user1",
+  "senderPublicKeyBase64" : "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE1OoWWEvM4WlY6LmdYM7lE8hO/z4kWEmUhqEEem4wI1uFnDhxnJh+1/WtQQmgv8NxphrxYftjtok/ZifdWcCy9g==",
+  "receiver" : "user2",
+  "ciphertext" : "TLQLmL/iWDTDDGCsDLYDESA6m9W9jS0O+T9rvxXpacc=",
+  "iv" : "xZ5bktJEsjhn3XNME5MSTQ==",
+  "timestamp" : "2025-12-07T23:36:34.833Z"
+} ]
